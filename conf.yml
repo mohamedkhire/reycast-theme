@@ -2,7 +2,7 @@
 
 info:
   name: "Relisys Theme"
-  identifier: "relisys-theme"
+  identifier: "relisys"
   description: "Dark theme for the Relisys Hosting panel"
   version: "v1.0.0"
   target: "beta-2026-08"
