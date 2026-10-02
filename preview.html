@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Relisys Theme preview</title>
+  <link rel="stylesheet" href="client/client.style.css" />
+  <style>
+    .preview {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 28px 20px 64px;
+    }
+    .preview-nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      margin-bottom: 22px;
+      background: rgba(13, 13, 13, 0.78);
+      border: 1px solid var(--ray-border);
+      border-radius: 12px;
+      box-shadow: inset 0 1px 0 var(--ray-highlight);
+    }
+    .preview-brand {
+      font-weight: 650;
+      letter-spacing: -0.04em;
+    }
+    .preview-brand span { color: var(--ray-accent); }
+    .preview-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 14px;
+    }
+    .preview-card {
+      background: var(--ray-surface);
+      border: 1px solid var(--ray-border);
+      border-radius: 12px;
+      box-shadow: var(--ray-shadow);
+      padding: 14px 16px;
+    }
+    .preview-card h2 {
+      margin: 0 0 12px;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--ray-text-muted);
+    }
+    .charts {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 12px;
+      margin-top: 14px;
+    }
+    .chart-box { height: 140px; }
+    .row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 12px;
+      margin-bottom: 10px;
+      border: 1px solid var(--ray-border);
+      border-radius: 8px;
+      background: var(--ray-surface);
+    }
+    .row .bar { width: 3px; height: 34px; border-radius: 99px; }
+    .meta { color: var(--ray-text-dim); font-size: 12px; font-variant-numeric: tabular-nums; }
+    .actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+    button.primary {
+      background: var(--ray-accent);
+      color: #fff;
+      border: 0;
+      padding: 8px 14px;
+    }
+    button.ghost {
+      background: var(--ray-elevated);
+      color: var(--ray-text);
+      border: 1px solid var(--ray-border);
+      padding: 8px 14px;
+    }
+    .meter {
+      height: 6px;
+      background: var(--ray-elevated);
+      border-radius: 99px;
+      overflow: hidden;
+      margin-top: 10px;
+    }
+    .meter > i {
+      display: block;
+      height: 100%;
+      width: 62%;
+      background: linear-gradient(90deg, #ff6363, #ff8a7a);
+    }
+    @media (max-width: 900px) {
+      .preview-grid, .charts { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body class="bg-neutral-900">
+  <div class="relisys-grain" aria-hidden="true"></div>
+  <main class="preview">
+    <nav class="preview-nav">
+      <div class="preview-brand">Relisys Theme <span>Raycast</span></div>
+      <div class="meta">graphite · coral · live graphs</div>
+    </nav>
+    <div class="preview-grid">
+      <section class="preview-card">
+        <h2>Servers</h2>
+        <div class="row">
+          <div class="bar" style="background:#34c77b"></div>
+          <div>
+            <div>vanilla-prod</div>
+            <div class="meta">192.168.10.14:25565 · node-eu-1</div>
+          </div>
+        </div>
+        <div class="row" style="background:linear-gradient(90deg, rgba(245,185,66,.12), var(--ray-surface) 28%)">
+          <div class="bar" style="background:#f5b942"></div>
+          <div>
+            <div>modpack-staging</div>
+            <div class="meta">starting · node-eu-2</div>
+          </div>
+        </div>
+        <div class="row" style="background:linear-gradient(90deg, rgba(255,99,99,.12), var(--ray-surface) 28%)">
+          <div class="bar" style="background:#ff6363"></div>
+          <div>
+            <div>backup-world</div>
+            <div class="meta">offline · node-us-1</div>
+          </div>
+        </div>
+      </section>
+      <section class="preview-card">
+        <h2>Actions</h2>
+        <div class="actions">
+          <button class="primary">Start</button>
+          <button class="ghost">Restart</button>
+          <button class="ghost">Kill</button>
+        </div>
+        <div class="meter" aria-hidden="true"><i></i></div>
+        <p class="meta" style="margin-top:12px">CPU 42.6% · RAM 6.1 GiB</p>
+      </section>
+    </div>
+    <div class="charts">
+      <section class="preview-card">
+        <h2>CPU</h2>
+        <div class="chart-box"><canvas id="cpu"></canvas></div>
+      </section>
+      <section class="preview-card">
+        <h2>Memory</h2>
+        <div class="chart-box"><canvas id="mem"></canvas></div>
+      </section>
+      <section class="preview-card">
+        <h2>Network</h2>
+        <div class="chart-box"><canvas id="net"></canvas></div>
+      </section>
+    </div>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+  <script src="public/charts.js"></script>
+  <script>
+    const labels = Array.from({ length: 20 }, (_, i) => i);
+    const wave = (offset, amp) => labels.map((i) => +(20 + amp * Math.abs(Math.sin((i + offset) / 3))).toFixed(2));
+    const base = {
+      labels,
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } } }
+    };
+    new Chart(document.getElementById("cpu"), { type: "line", data: { labels, datasets: [{ label: "CPU", data: wave(1, 28), fill: true }] }, options: base.options });
+    new Chart(document.getElementById("mem"), { type: "line", data: { labels, datasets: [{ label: "Memory", data: wave(2.4, 18), fill: true }] }, options: base.options });
+    new Chart(document.getElementById("net"), { type: "line", data: { labels, datasets: [{ label: "In", data: wave(0.6, 22), fill: true }, { label: "Out", data: wave(3.1, 12), fill: true }] }, options: base.options });
+  </script>
+</body>
+</html>

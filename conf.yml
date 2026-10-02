@@ -1,0 +1,22 @@
+# https://blueprint.zip/docs/configs/confyml
+
+info:
+  name: "Relisys Theme"
+  identifier: "relisys-theme"
+  description: "Dark theme for the Relisys Hosting panel"
+  version: "v1.0.0"
+  target: "beta-2026-08"
+  author: "Mohamed Khire"
+  icon: "assets/icon.svg"
+
+admin:
+  view: "admin/view.blade.php"
+  css: "admin/admin.style.css"
+  wrapper: "admin/wrapper.blade.php"
+
+dashboard:
+  css: "client/client.style.css"
+  wrapper: "client/wrapper.blade.php"
+
+data:
+  public: "public"

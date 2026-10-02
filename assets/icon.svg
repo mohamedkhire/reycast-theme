@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" role="img" aria-label="Relisys Theme">
+  <rect width="128" height="128" rx="28" fill="#0D0D0D"/>
+  <rect x="10" y="10" width="108" height="108" rx="22" fill="#1A1A1A" stroke="rgba(255,255,255,0.1)"/>
+  <path d="M36 84 L52 44 L64 68 L76 52 L92 84" fill="none" stroke="#FF6363" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+  <circle cx="92" cy="84" r="5" fill="#FFB086"/>
+</svg>
